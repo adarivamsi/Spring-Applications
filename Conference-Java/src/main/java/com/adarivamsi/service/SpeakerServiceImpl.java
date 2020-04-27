@@ -3,8 +3,10 @@ package com.adarivamsi.service;
 import com.adarivamsi.model.Speaker;
 import com.adarivamsi.repository.SpeakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -14,19 +16,31 @@ import java.util.List;
  */
 
 @Service("speakerService")
+@Profile("dev")
 public class SpeakerServiceImpl implements SpeakerService {
 
+    @Autowired
     private SpeakerRepository repository;
 
-    @Autowired
+    public SpeakerServiceImpl () {
+        System.out.println("Empty constructor");
+    }
+
     public SpeakerServiceImpl (SpeakerRepository speakerRepository) {
+        System.out.println("Service with repo parameter constructor");
         repository = speakerRepository;
+    }
+
+    @PostConstruct
+    private void initialize () {
+        System.out.println("After constructors");
     }
 
     public List<Speaker> findAll() {
         return repository.findAll();
     }
     public void setRepository(SpeakerRepository repository) {
+        System.out.println("Setter");
         this.repository = repository;
     }
 }
